@@ -1,11 +1,15 @@
 'use client'
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { HomeIcon, UserIcon, PlusIcon } from './Icons';
 import CreatePostModal from './CreatePostModal';
 
 export default function BottomNav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const isMyPage = searchParams.get('filter') === 'my';
 
   return (
     <>
@@ -19,20 +23,20 @@ export default function BottomNav() {
         </button>
 
       <div className="max-w-2xl mx-auto flex justify-around items-center h-16">
-        {/* 피드 탭 (활성화) */}
-        <button className="flex flex-col items-center gap-1 px-4 py-2">
-          <HomeIcon active />
-          <span className="text-xs text-blue-600 font-medium">피드</span>
-        </button>
+        {/* 피드 탭 */}
+        <Link href="/" className="flex flex-col items-center gap-1 px-4 py-2">
+          <HomeIcon active={!isMyPage} />
+          <span className={`text-xs ${!isMyPage ? 'text-blue-600 font-medium' : 'text-gray-400'}`}>피드</span>
+        </Link>
 
         {/* 새 글 버튼 공간 */}
         <div className="w-14"></div>
 
         {/* 내 글 탭 */}
-        <button className="flex flex-col items-center gap-1 px-4 py-2">
-          <UserIcon />
-          <span className="text-xs text-gray-400">내 글</span>
-        </button>
+        <Link href="/?filter=my" className="flex flex-col items-center gap-1 px-4 py-2">
+          <UserIcon active={isMyPage} />
+          <span className={`text-xs ${isMyPage ? 'text-blue-600 font-medium' : 'text-gray-400'}`}>내 글</span>
+        </Link>
       </div>
 
       {/* 새 글 버튼 라벨 */}
