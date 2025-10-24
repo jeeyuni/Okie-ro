@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     // Supabase에 메시지 저장
     const { data, error } = await supabaseAdmin
-      .from("messages")
+      .from("Messages")
       .insert({
         content,
         lat,
