@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import PostCard from './components/PostCard';
 interface Message {
   id: string;
@@ -17,14 +17,15 @@ interface Message {
 export default function Home({
   searchParams
 }: {
-  searchParams: { filter?: string }
+  searchParams: Promise<{ filter?: string }>
 }) {
+  const params = use(searchParams);
   const [posts, setPosts] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [myAnonId, setMyAnonId] = useState<string | null>(null);
 
-  const isMyPage = searchParams.filter === 'my';
+  const isMyPage = params.filter === 'my';
 
   // 시간 차이 계산 함수
   const getTimeAgo = (createdAt: string) => {
@@ -106,12 +107,32 @@ export default function Home({
     : posts;
 
   // 빈 상태 처리
-  if (isMyPage && ( !myAnonId) || displayedPosts.length === 0) {
+  if (isMyPage && !myAnonId) {
     return (
       <main className="max-w-2xl mx-auto px-4 py-4">
         <div className="text-center text-gray-500 bg-gray-50 p-8 rounded-lg">
           <p className="text-lg mb-2">아직 작성한 글이 없습니다</p>
           <p className="text-sm">첫 번째 메시지를 작성해보세요!</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (displayedPosts.length === 0) {
+    return (
+      <main className="max-w-2xl mx-auto px-4 py-4">
+        <div className="text-center text-gray-500 bg-gray-50 p-8 rounded-lg">
+          {isMyPage ? (
+            <>
+              <p className="text-lg mb-2">작성한 글이 없습니다</p>
+              <p className="text-sm">이 지역에 작성한 메시지가 없습니다</p>
+            </>
+          ) : (
+            <>
+              <p className="text-lg mb-2">주변에 메시지가 없습니다</p>
+              <p className="text-sm">첫 번째 메시지를 작성해보세요!</p>
+            </>
+          )}
         </div>
       </main>
     );
