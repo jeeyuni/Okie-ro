@@ -14,27 +14,17 @@ interface Message {
   created_at: string;
 }
 
-export default function Home() {
-  // // 게시글 목록 데이터
-  // const [posts, setPosts] = useState<Message[]>([]);
-  // const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   //GET API 호출
-  //   fetch('/api/messages')
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setPosts(data);
-  //       setLoading(false);
-  //     });
-  // }, []);
-
-
-  // if (loading) return <div>로딩중...</div>;
-
+export default function Home({
+  searchParams
+}: {
+  searchParams: { filter?: string }
+}) {
   const [posts, setPosts] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [myAnonId, setMyAnonId] = useState<string | null>(null);
+
+  const isMyPage = searchParams.filter === 'my';
 
   // 시간 차이 계산 함수
   const getTimeAgo = (createdAt: string) => {
@@ -54,6 +44,10 @@ export default function Home() {
   };
 
   useEffect(() => {
+    // localStorage에서 내 anon_id 가져오기
+    const storedAnonId = localStorage.getItem('my_anon_id');
+    setMyAnonId(storedAnonId);
+
     // 현재 위치 가져오기
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -106,11 +100,17 @@ export default function Home() {
     );
   }
 
-  if (posts.length === 0) {
+  // 필터링 로직
+  const displayedPosts = isMyPage && myAnonId
+    ? posts.filter(post => post.anon_id === myAnonId)
+    : posts;
+
+  // 빈 상태 처리
+  if (isMyPage && ( !myAnonId) || displayedPosts.length === 0) {
     return (
       <main className="max-w-2xl mx-auto px-4 py-4">
         <div className="text-center text-gray-500 bg-gray-50 p-8 rounded-lg">
-          <p className="text-lg mb-2">주변에 메시지가 없습니다</p>
+          <p className="text-lg mb-2">아직 작성한 글이 없습니다</p>
           <p className="text-sm">첫 번째 메시지를 작성해보세요!</p>
         </div>
       </main>
@@ -120,7 +120,7 @@ export default function Home() {
   return (
     // 메인 피드
     <main className="max-w-2xl mx-auto px-4 py-4 space-y-4">
-      {posts.map((post) => (
+      {displayedPosts.map((post) => (
         <PostCard
           key={post.id}
           id={post.id}

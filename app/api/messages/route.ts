@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "좌표 범위를 벗어남" }, { status: 400 });
     }
 
-    // Supabase에 메시지 저장
+    // Supabase에 메시지 저장 
     const { data, error } = await supabaseAdmin
       .from("Messages")
       .insert({
