@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "직장YAK",
+  title: "오키로",
   description: "직장인을 위한 익명 커뮤니티",
 };
 
