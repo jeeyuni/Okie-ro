@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { HomeIcon, UserIcon, PlusIcon } from './Icons';
-import CreatePostModal from './CreatePostModal_o';
+import CreatePostModal from './CreatePostModal';
 
 export default function BottomNav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
