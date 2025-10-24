@@ -8,7 +8,7 @@ export default function Header() {
         <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
           <BriefcaseIcon />
         </div>
-        <h1 className="text-xl font-bold text-gray-900">직장YAK</h1>
+        <h1 className="text-xl font-bold text-gray-900">5km: 오키로</h1>
       </div>
     </header>
   );
