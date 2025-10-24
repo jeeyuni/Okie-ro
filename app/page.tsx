@@ -1,30 +1,38 @@
+'use client'; // 클라이언트 컴포넌트로 변경
+
 import PostCard from './components/PostCard';
+import { useEffect, useState } from 'react';
+
+interface Message {
+  id: string;
+  anon_id: string;
+  content: string;
+  likes_count: number;
+  lat: number;
+  lon: number;
+  dong_name: string;
+  comments_count: number;
+  created_at: string;
+}
 
 export default function Home() {
   // 게시글 목록 데이터
-  const posts = [
-    {
-      id: 1,
-      content: '오늘도 회의가 3개... 정말 일 언제 하라는 건지 모르겠네요',
-      voteCount: 39,
-      commentCount: 12,
-      timeAgo: '5분 전',
-    },
-    {
-      id: 2,
-      content: '점심 메뉴 추천 받습니다! 강남역 근처',
-      voteCount: 27,
-      commentCount: 8,
-      timeAgo: '23분 전',
-    },
-    {
-      id: 3,
-      content: '재택근무 계속 했으면 좋겠다는 사람 손!',
-      voteCount: 144,
-      commentCount: 45,
-      timeAgo: '1시간 전',
-    },
-  ];
+  const [posts, setPosts] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    //GET API 호출
+    fetch('/api/messages')
+      .then(res => res.json())
+      .then(data => {
+        setPosts(data);
+        setLoading(false);
+      });
+  }, []);
+
+
+  if (loading) return <div>로딩중...</div>;
+
 
   return (
     // 메인 피드
@@ -32,10 +40,15 @@ export default function Home() {
       {posts.map((post) => (
         <PostCard
           key={post.id}
+          id={post.id}
+          anon_id={post.anon_id}
           content={post.content}
-          voteCount={post.voteCount}
-          commentCount={post.commentCount}
-          timeAgo={post.timeAgo}
+          likes_count={post.likes_count}
+          lat = {post.lat}
+          lon = {post.lon}
+          dong_name= {post.dong_name}
+          comments_count={post.comments_count}
+          created_at={post.created_at}
         />
       ))}
     </main>
