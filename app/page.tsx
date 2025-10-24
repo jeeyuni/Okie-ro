@@ -46,7 +46,7 @@ export default function Home({
 
   useEffect(() => {
     // localStorage에서 내 anon_id 가져오기
-    const storedAnonId = localStorage.getItem('my_anon_id');
+    const storedAnonId = localStorage.getItem('anon_id');
     setMyAnonId(storedAnonId);
 
     // 현재 위치 가져오기
