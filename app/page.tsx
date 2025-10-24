@@ -6,7 +6,7 @@ interface Message {
   id: string;
   anon_id: string;
   content: string;
-  likes_count: number;
+  votes_count: number;
   lat: number;
   lon: number;
   dong_name: string;
@@ -147,7 +147,7 @@ export default function Home({
           id={post.id}
           anon_id={post.anon_id}
           content={post.content}
-          likes_count={post.likes_count}
+          votes_count={post.votes_count}
           lat = {post.lat}
           lon = {post.lon}
           dong_name= {post.dong_name}

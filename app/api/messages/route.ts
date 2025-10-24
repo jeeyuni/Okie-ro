@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
         lon,
         anon_id,
         dong_name: dong_name || null,
-        likes_count: 0,
+        votes_count: 0,
         comments_count: 0,
       })
       .select()
