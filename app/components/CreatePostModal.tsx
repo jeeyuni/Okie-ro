@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
+import { getUserId } from '@/lib/user';
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -14,11 +15,6 @@ export default function CreatePostModal({ isOpen, onClose, onSuccess }: CreatePo
   const [dongName, setDongName] = useState('위치 확인 중...');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-
-  // 익명 ID 생성
-  const generateAnonId = () => {
-    return `익명${Math.floor(Math.random() * 10000)}`;
-  };
 
   // 위치 정보 가져오기
   useEffect(() => {
@@ -68,7 +64,7 @@ export default function CreatePostModal({ isOpen, onClose, onSuccess }: CreatePo
           content: content.trim(),
           lat: location.lat,
           lon: location.lon,
-          anon_id: generateAnonId(),
+          anon_id: getUserId(),
           dong_name: dongName,
         }),
       });
