@@ -152,7 +152,7 @@ export default function Home({
           lon = {post.lon}
           dong_name= {post.dong_name}
           comments_count={post.comments_count}
-          created_at={post.created_at}
+          created_at={getTimeAgo(post.created_at)}
         />
       ))}
     </main>
